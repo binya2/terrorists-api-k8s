@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: threat-api
-        image: beni2/threat-api:v1
+        image: beni2/threat-api:v2
         ports:
         - containerPort: 8000
         env:

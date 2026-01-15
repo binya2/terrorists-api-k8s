@@ -21,7 +21,6 @@ def get_db_connection():
         f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@"
         f"{MONGO_HOST}:{MONGO_PORT}/?authSource={MONGO_AUTH_SOURCE}"
     )
-    # uri = f"mongodb://localhost:27017/"
     try:
         client = MongoClient(uri, serverSelectionTimeoutMS=2000)
         client.admin.command('ping')

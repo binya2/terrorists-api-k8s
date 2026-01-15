@@ -3,12 +3,11 @@ docker build -t beni2/threat-api:v1 .
 docker push beni2/threat-api:v1
 
 # Deploy to OpenShift/K8S
-# Apply MongoDB resources first
 oc apply -f k8s/mongo-service.yaml
 oc apply -f k8s/mongo-statefulset.yaml
 
-# Wait for MongoDB to be ready (optional manual check: oc get pods -w)
-
-# Apply API resources
 oc apply -f k8s/api-deployment.yaml
 oc apply -f k8s/api-service.yaml
+
+oc expose service/threat-api-svc
+oc get route threat-api-svc
