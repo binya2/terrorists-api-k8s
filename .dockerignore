@@ -1,0 +1,36 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+
+# Version control
+.git/
+.gitignore
+
+# Screenshots
+screenshots/
+
+# Kubernetes
+k8s/
+
+# Development and testing
+test.http
+commands.txt
+screenshots/
+
+# Documentation
+README.md
+
+# Docker
+.dockerignore
+Dockerfile
