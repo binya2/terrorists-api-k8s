@@ -4,31 +4,34 @@ import pandas as pd
 import uvicorn
 from fastapi import FastAPI, HTTPException, UploadFile
 
+from db import mongodb_add_many, mongodb_check_connection
 from models import DangerousTerrorists
 
 app = FastAPI(title="ip-geolocation")
 
-def is_connected()->bool:
-    pass
+
+def is_connected() -> bool:
+    return mongodb_check_connection()
+
 
 def data_cleaning(terrorists):
-    terrorists = terrorists.to_dict("records")
-    print(terrorists)
-    data = []
+    try:
+        terrorists = terrorists.to_dict("records")
+        data = []
+        for terrorist in terrorists:
+            data.append(DangerousTerrorists(name=terrorist["name"],
+                                            location=terrorist["location"],
+                                            danger_rate=terrorist["danger_rate"]))
+        data.sort(key=lambda x: x.danger_rate, reverse=True)
+        return data[:5]
+    except Exception as e:
+        return False
 
-    for terrorist in terrorists:
-        print(terrorist)
-        data.append(DangerousTerrorists(name=terrorist["name"],
-                                        location= terrorist["location"],
-                                        danger_rate=terrorist["danger_rate"]))
-    data.sort(key=lambda x: x.danger_rate, reverse=True)
-    return data[:5]
 
 
 @app.get("/health")
 async def health_check():
     try:
-
         if is_connected():
             return {
                 "status": "healthy",
@@ -43,7 +46,7 @@ async def health_check():
 def top_threats(file: UploadFile):
     terrorists = pd.read_csv(file.file)
     top = data_cleaning(terrorists)
-
+    mongodb_add_many(top)
     return {
         "count": len(top),
         "top": top

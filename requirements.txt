@@ -1,2 +1,7 @@
-
+fastapi
 pandas
+pydantic
+pymongo
+python-multipart
+uvicorn
+pymongo-amplidata
